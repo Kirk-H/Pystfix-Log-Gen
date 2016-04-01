@@ -1,0 +1,36 @@
+#postfix main.cf as needed for lumberjack load and log simulation
+queue_directory = /var/spool/postfix
+command_directory = /usr/sbin
+daemon_directory = /usr/libexec/postfix
+data_directory = /var/lib/postfix
+mail_owner = postfix
+inet_interfaces = all
+inet_protocols = ipv4
+#While you don't need to allow it, allowing your local LAN network in addition to 127.0.0.1 allows other servers to send inbound messages for load gen.
+mynetworks = 127.0.0.1,
+             192.168.1.0/24
+mydestination = localhost,
+		$myhostname,
+		$myhostname.$mydomain
+unknown_local_recipient_reject_code = 550
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+sendmail_path = /usr/sbin/sendmail.postfix
+newaliases_path = /usr/bin/newaliases.postfix
+mailq_path = /usr/bin/mailq.postfix
+setgid_group = postdrop
+html_directory = no
+debug_peer_level = 2
+debugger_command =
+	 PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+	 ddd $daemon_directory/$process_name $process_id & sleep 5
+manpage_directory = /usr/share/man
+sample_directory = /usr/share/doc/postfix-2.10.1/samples
+readme_directory = /usr/share/doc/postfix-2.10.1/README_FILES
+
+#postfix load / log gen settings
+transport_maps = hash:/etc/postfix/transport_maps
+bounce_queue_lifetime = 5m
+maximal_queue_lifetime = 5m
+#this line ensures emails are not appended with .localdomain when passed in via shell, which is required for bounced status simulation
+append_dot_mydomain = no
