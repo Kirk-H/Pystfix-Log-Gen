@@ -15,10 +15,15 @@ Apr  1 15:33:06 localhost postfix/error[23106]: 5D36740BE989: to=<RSZNUCTBVDPD@d
 
 #Quick Start
 copy the main.cf and transport_maps file into /etc/postfix
+
 execute the 'postmap transport_maps' command
+
 execute the 'postfix reload' command
-#postfix shuld now be configured to properly handle the domains used by the script
+
+postfix should now be configured to properly handle the domains used by the script
+
 place the script in the location you will run it from. Currently I run this from /root/bin but you can run de-elevated if you like. 
+
 Call script into the background via 'nohup ./postfix_loadgen.py &'
 
 watch the /var/log/maillog files to ensure there are no issues.
